@@ -2,8 +2,13 @@
 
 Plugin.create(:mention_extract) do
 
+  settings('メンション抽出') do
+    input '抽出する正規表現', :mention_extract_pattern
+  end
+
   on_update do | service, msgs |
-    msgs = msgs.select{ |m| /(ぽっけ)|(ぽけ)/ =~ m[:message] }
+    pattern = UserConfig[:mention_extract_pattern]
+    msgs = msgs.select{ |m| /#{pattern}/ =~ m[:message] }
     timeline(:mentions) << msgs
   end
 
