@@ -9,7 +9,8 @@ Plugin.create(:mention_extract) do
   on_update do | service, msgs |
     pattern = UserConfig[:mention_extract_pattern]
     msgs = msgs.select{ |m| /#{pattern}/ =~ m[:message] }
-    timeline(:mentions) << msgs
+    #timeline(:mentions) << msgs
+    Plugin.call(:mention, service, msgs) if msgs != []
   end
 
 end
